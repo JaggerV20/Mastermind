@@ -22,6 +22,7 @@ namespace Mastermind
             get { return colorCount; }
         }
 
+        //Constructor
         public Code(int[] colorCode)
         {
             this.ColorCode = colorCode;
