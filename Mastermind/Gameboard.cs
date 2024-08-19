@@ -28,17 +28,22 @@ namespace Mastermind
         {
             Board = new Code[NORMALGAMELENGTH];
             GuessesRemaining = NORMALGAMELENGTH;
-            //Generate MasterCode
-            int[] GeneratedCode = new int[4];
-            Random rand = new Random();
-            for(int i = 0; i < GeneratedCode.Length; i++)
-            {
-                GeneratedCode[i] = rand.Next(0, 6);
-            }
-            MasterCode = new Code(GeneratedCode);
+
         }
 
         //Methods
+
+        //Return an int array to be used in a Code constructor
+        private int[] GenerateCode()
+        {
+            int[] GeneratedCode = new int[4];
+            Random rand = new Random();
+            for (int i = 0; i < GeneratedCode.Length; i++)
+            {
+                GeneratedCode[i] = rand.Next(0, 6);
+            }
+            return GeneratedCode;
+        }
 
     }
 }
