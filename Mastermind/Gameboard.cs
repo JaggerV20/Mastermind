@@ -33,7 +33,7 @@ namespace Mastermind
         public Gameboard()
         {
             Board = new Code[NORMALGAMELENGTH];
-            GuessAnalysis = new int[3];
+            GuessAnalysis = new int[NORMALGAMELENGTH][];
             GuessesRemaining = NORMALGAMELENGTH;
 
         }
@@ -70,8 +70,75 @@ namespace Mastermind
          */
         private Code GetGuess()
         {
-            int[] filler = { 0, 0, 0, 0 };
-            return new Code(filler);
+            int[] codeBase = {0, 0, 0, 0 };
+            int selectedSlot = -1;
+            int selectedColor = -1;
+            bool validEntry = false;
+            while (selectedSlot != 0)
+            {
+                validEntry = false;
+                selectedSlot = -1;
+                //Select slot loop
+                while (!validEntry)
+                {
+                    Console.WriteLine("Please select a slot (1, 2, 3, 4). Enter 0 to quit: ");
+                    try
+                    {
+                        selectedSlot = Convert.ToInt32(Console.ReadLine());
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Invalid entry");
+                    }
+                    if (selectedSlot < 0 || selectedSlot > 4)
+                    {
+                        Console.WriteLine("Invalid entry");
+                    }
+                    else
+                    {
+                        validEntry = true;
+                        if (selectedSlot == 0)
+                        {
+                            for (int i = 0; i < codeBase.Length; i++)
+                            {
+                                if (codeBase[i] == 0)
+                                {
+                                    Console.WriteLine($"No color entered for {i + 1}. " +
+                                        "Please enter one before exiting.");
+                                    validEntry = false;
+                                }
+                            }
+                        }
+                    }
+                }
+                //Select color peg loop
+                validEntry = false;
+                selectedColor = -1;
+                while (selectedSlot != 0 && !validEntry)
+                {
+                    Console.WriteLine($"Please select a color for slot {selectedSlot} " +
+                        $"(1 - Red, 2 - Orange, 3 - Yellow, 4 - Green, 5 - Blue, 6 - Purple). " +
+                        $"Enter 0 to quit: ");
+                    try
+                    {
+                        selectedColor = Convert.ToInt32(Console.ReadLine());
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Invalid entry");
+                    }
+                    if (selectedColor < 0 || selectedColor > 6)
+                    {
+                        Console.WriteLine("Invalid entry");
+                    }
+                    else
+                    {
+                        validEntry = true;
+                        codeBase[selectedSlot - 1] = selectedColor;
+                    }
+                }
+            }
+            return new Code(codeBase);
         }
 
         /*
