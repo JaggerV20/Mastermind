@@ -142,13 +142,42 @@ namespace Mastermind
         }
 
         /*
-         * Take the entered Code to  return an array for GuessAnalysis
+         * Take the entered Code to return an array for GuessAnalysis
          * Return format is a size 3 array representing
          * [Correct placements, Correct colors in wrong places, Completely wrong placements]
+         * Completely wrong placements isn't exactly needed. Keep this in mind if it can 
+         * streamline the code. It might be helpful for debugging at least.
          */
         private int[] GetFeedback(Code guess)
         {
+            //pegsListed will be info[2]
+            int pegsListed = 4;
             int[] info = new int[3];
+            int[] guessColorsRemaining = guess.ColorCount;
+            int[] masterColorsRemaining = MasterCode.ColorCount;
+            //Checking exact placements
+            for(int i = 0; i < guess.colorCode.Length; i++ )
+            {
+                //If color is in correct spot, increment info[0] and decrement colorsRemaining
+                //Used to show what colors need to be guessed for info[1];
+                if (guess.colorCode[i] == MasterCode.colorCode[i])
+                {
+                    info[0]++;
+                    guessColorsRemaining[guess.colorCode[i]]--;
+                    masterColorsRemaining[guess.colorCode[i]]--;
+                    pegsListed--;
+                }
+            }
+            //checking correct colors in wrong places
+            for(int i = 0; i < guessColorsRemaining.Length; i++)
+            {
+                if (guessColorsRemaining[i] == masterColorsRemaining[i])
+                {
+                    info[1] += guessColorsRemaining[i];
+                    pegsListed -= guessColorsRemaining[i];
+                }
+            }
+            info[2] = pegsListed;
             return info;
         }
 
